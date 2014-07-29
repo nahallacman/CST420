@@ -2,7 +2,7 @@
 //
 // CST 407 - assignment #3
 //
-// <your name here>
+// Cal Barkman
 //
 // File: raceAnalyzer.h
 //
@@ -17,6 +17,8 @@
 #include  <string>
 #include  <list>
 #include  <set>
+#include <vector>
+#include "Stage.h"
 
 using  namespace  std;
 
@@ -141,8 +143,16 @@ class RaceAnalyzer
 
 
   private  :
+	  // you get to determine the private member data and functions.
 
-    // you get to determine the private member data and functions.
+	  int m_numstages;
+
+	  string m_stageFilename;
+	  string m_riderFilename;
+
+	  void init();
+
+	  vector<Stage> m_stages;
 
 };
 

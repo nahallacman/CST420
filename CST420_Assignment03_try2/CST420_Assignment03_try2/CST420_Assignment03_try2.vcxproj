@@ -14,10 +14,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainDisplay.cpp" />
     <ClCompile Include="raceAnalyzer.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainDisplay.h" />
     <ClInclude Include="raceAnalyzer.h" />
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EF5E0D6D-9ED5-4CCF-8232-A650E101C5B0}</ProjectGuid>
