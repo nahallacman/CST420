@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="raceAnalyzer.cpp" />
     <ClCompile Include="raceAnalyzer.h" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,9 @@
     <ClCompile Include="raceAnalyzer.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="raceAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainDisplay.cpp">
