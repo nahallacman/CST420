@@ -80,11 +80,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="raceAnalyzer.cpp" />
-    <ClCompile Include="raceAnalyzer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainDisplay.cpp" />
     <ClInclude Include="mainDisplay.h" />
+    <ClInclude Include="raceAnalyzer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
