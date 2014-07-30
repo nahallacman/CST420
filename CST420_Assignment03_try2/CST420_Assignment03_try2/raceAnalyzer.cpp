@@ -24,20 +24,20 @@ typedef  istream_iterator<string>  StringInIter;
 
 #define DEBUGGING 1
 
-RaceAnalyzer::RaceAnalyzer(const string  &stageFilename,
-	const string  &riderFilename) :m_stageFilename(stageFilename), m_riderFilename(riderFilename)
+RaceAnalyzer::RaceAnalyzer(const string  &stageFilename, const string  &riderFilename) :m_stageFilename(stageFilename), m_riderFilename(riderFilename)
 {
 	init();
 }
 
 size_t RaceAnalyzer::numStages()  const
 {
-	size_t ret_val = m_numstages;
+	size_t ret_val = m_stages.size();
 	return ret_val;
 }
 
 string  RaceAnalyzer::getTeam(const  string  &riderName)  const
 {
+	string a = m_riders.;
 	return string();
 }
 //
@@ -112,41 +112,58 @@ RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  con
 	return MPH();
 }
 
+
+
+
+
+
 void RaceAnalyzer::init()
 {
+	typedef  istream_iterator<Stage>     StageInIter;
 	
-	/*
 #if DEBUGGING
-	cout << "Running in debug mode." << endl;
-	cout << "m_stageFilename = " << m_stageFilename;
-	cout << "m_riderFilename = " << m_riderFilename;
+	cout << "Running in debug mode."
+		<< " m_stageFilename = " << m_stageFilename
+		<< " m_riderFilename = " << m_riderFilename << endl;
 #else
 	cout << "Not running in debug mode." << endl;
 #endif
-	*/
-	//start by reading in the stage file line by line
-	//one value per line, ++m_numstages per value
+	
+	ifstream fInStage(m_stageFilename); // initalize stage file
 
-
-	ifstream inSkip(m_stageFilename); // initalize skip list
-
-	if (inSkip.is_open()) // how to replace this statement?
+	if (fInStage.is_open()) 
 	{
-#if DEBUGGING
-		cout << "Skip File open" << endl;
-#endif
-		StringInIter StageIter(inSkip);
-		for (; StageIter != StringInIter(); ++StageIter)
-		{
-			string insert = *StageIter;
-			//normalize_word(insert);
-			//m_stages.push_back()
-		}
+		cout << "Stage file open" << endl;
+		StageInIter sIter(fInStage);
+
+		std::copy(std::istream_iterator<Stage>(sIter), std::istream_iterator<Stage>(),  //start by reading the stage file
+			std::back_inserter(m_stages)); // and putting it into the m_stages vector
+
+		cout << "End Stage file copy" << endl;
 	}
 	else
 	{
-#if DEBUGGING
-		cout << "Skip File not open" << endl;
-#endif
+		cout << "Stage File not open" << endl;
+	}
+
+	ifstream fInRiders(m_riderFilename); // initalize riders file
+
+	if (fInRiders.is_open())
+	{
+		cout << "Stage file open" << endl;
+		for (std::string line; getline(fInRiders, line);)
+		{
+			string name, country, team;
+			int time;
+			istringstream test(line);
+			test >> name >> country >> team;
+			vector<int> raceTimes;
+			for (int i = 0; i < m_stages.size(); i++)
+			{
+				test >> time;
+				raceTimes.push_back(time);
+			}
+			m_riders.insert(Rider(name, country, team, raceTimes));
+		}
 	}
 }

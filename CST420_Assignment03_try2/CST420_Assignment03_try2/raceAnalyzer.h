@@ -19,8 +19,19 @@
 #include  <set>
 #include <vector>
 #include "Stage.h"
+#include "Rider.h"
 
 using  namespace  std;
+
+struct  compareRider
+{
+	bool  operator()(const Rider  &lhs, const Rider  &rhs) const
+	{
+		return  lhs.m_name < rhs.m_name;
+	}
+};
+
+
 
 
 //
@@ -153,6 +164,9 @@ class RaceAnalyzer
 	  void init();
 
 	  vector<Stage> m_stages;
+	  
+	  typedef set<Rider, compareRider>  AnimalMSet;
+	  set<Rider> m_riders;
 
 };
 

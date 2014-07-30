@@ -27,6 +27,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mainDisplay.h">
@@ -38,5 +41,12 @@
     <ClInclude Include="Stage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="stages.txt" />
+    <Text Include="riders.txt" />
   </ItemGroup>
 </Project>

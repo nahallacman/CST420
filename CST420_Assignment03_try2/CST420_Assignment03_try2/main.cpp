@@ -131,6 +131,7 @@ static MenuChoice  getChoice()
 //
 // Main program
 //
+/*
 int  main()
 {
   try
@@ -181,4 +182,13 @@ int  main()
   }
 
   return  EXIT_SUCCESS;
+}
+*/
+
+int main()
+{
+	RaceAnalyzer a( STAGE_FILENAME, RIDER_FILENAME);
+
+	size_t b = a.numStages();
+	return 0;
 }
