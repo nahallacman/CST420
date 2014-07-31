@@ -16,7 +16,8 @@
 
 #include  <string>
 #include  <list>
-#include  <set>
+#include <set>
+#include  <map>
 #include <vector>
 #include "Stage.h"
 #include "Rider.h"
@@ -165,9 +166,12 @@ class RaceAnalyzer
 
 	  vector<Stage> m_stages;
 	  
+
+	  map<string, Rider> m_riders;
+	  /*
 	  typedef set<Rider, compareRider>  AnimalMSet;
 	  set<Rider> m_riders;
-
+	  */
 };
 
 

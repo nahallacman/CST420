@@ -19,6 +19,9 @@ public:
 	bool operator<( const Rider &rhs);
 
 	string getName() { return m_name; }
+	vector<int> getRaceTimes() { return m_raceTimes; }
+	string getHomeCountry() { return m_homeCountry; }
+	string getTeamName() { return m_teamname; }
 
 //private:
 	string m_name;

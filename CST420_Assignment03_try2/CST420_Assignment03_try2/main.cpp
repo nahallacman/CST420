@@ -17,6 +17,7 @@
 #include  <assert.h>
 #include  <stdlib.h>
 #include  "mainDisplay.h"
+#include "raceAnalyzer.h" // this is for testing
 
 
 //
@@ -190,5 +191,10 @@ int main()
 	RaceAnalyzer a( STAGE_FILENAME, RIDER_FILENAME);
 
 	size_t b = a.numStages();
+	string c = a.getTeam("Anderson");
+	string d = a.getCountry("Anderson");
+	a.riders();
+	a.teams();
+	a.countries();
 	return 0;
 }

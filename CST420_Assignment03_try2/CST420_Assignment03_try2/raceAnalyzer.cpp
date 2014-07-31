@@ -8,7 +8,7 @@
 // Definitions for RaceAnalyzer class.
 //
 
-#include  "raceAnalyzer.h"
+#include "raceAnalyzer.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -24,6 +24,33 @@ typedef  istream_iterator<string>  StringInIter;
 
 #define DEBUGGING 1
 
+string extract_rider(pair<string, Rider> ret) { string retval = ret.second.getName(); return retval; }
+string extract_team(pair<string, Rider> ret) { string retval = ret.second.getTeamName(); return retval; }
+string extract_country(pair<string, Rider> ret) { string retval = ret.second.getHomeCountry(); return retval; }
+
+struct counter {
+	int tot;
+	void operator() (int i)
+	{
+		tot += i;
+	}
+} counterobj;
+
+void extract_rider_results(pair<string, Rider> rider) {  // function:
+	vector<int> temp = rider.second.getRaceTimes();
+	counter time1 = for_each(temp.begin(), temp.end(), counterobj);
+	/*
+	typedef  pair<Seconds, string>  PairResults;
+	typedef  list<PairResults>      Results;
+	Seconds sec;
+	string str;
+	PairResults ins(sec, str);
+	Results structure;
+	structure.push_back(ins);
+	*/
+}
+
+
 RaceAnalyzer::RaceAnalyzer(const string  &stageFilename, const string  &riderFilename) :m_stageFilename(stageFilename), m_riderFilename(riderFilename)
 {
 	init();
@@ -37,8 +64,8 @@ size_t RaceAnalyzer::numStages()  const
 
 string  RaceAnalyzer::getTeam(const  string  &riderName)  const
 {
-	string a = m_riders.;
-	return string();
+	Rider retval = m_riders.at(riderName);
+	return retval.getTeamName();
 }
 //
 // Returns the team name for a specified rider.
@@ -47,7 +74,8 @@ string  RaceAnalyzer::getTeam(const  string  &riderName)  const
 
 string  RaceAnalyzer::getCountry(const string  &riderName)  const
 {
-	return string();
+	Rider retval = m_riders.at(riderName);
+	return retval.getHomeCountry();
 }
 //
 // Returns the country name for a specified rider.
@@ -56,7 +84,9 @@ string  RaceAnalyzer::getCountry(const string  &riderName)  const
 
 RaceAnalyzer::StrSet  RaceAnalyzer::riders()  const
 {
-	return StrSet();
+	StrSet retval;
+	std::transform(m_riders.begin(), m_riders.end(), inserter(retval, retval.begin()), extract_rider);
+	return retval;
 }
 //
 // Returns the names of all the riders in the race.
@@ -65,7 +95,9 @@ RaceAnalyzer::StrSet  RaceAnalyzer::riders()  const
 
 RaceAnalyzer::StrSet RaceAnalyzer::teams()  const
 {
-	return StrSet();
+	StrSet retval;
+	std::transform(m_riders.begin(), m_riders.end(), inserter(retval, retval.begin()), extract_team);
+	return retval;
 }
 //
 // Returns the names of all the teams in the race.
@@ -74,7 +106,9 @@ RaceAnalyzer::StrSet RaceAnalyzer::teams()  const
 
 RaceAnalyzer::StrSet  RaceAnalyzer::countries()  const
 {
-	return StrSet();
+	StrSet retval;
+	std::transform(m_riders.begin(), m_riders.end(), inserter(retval, retval.begin()), extract_country);
+	return retval;
 }
 //
 // Returns the names of all the countries represented
@@ -86,6 +120,11 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 	const string  &team,
 	const string  &country)  const
 {
+	//    typedef  pair<Seconds, string>  PairResults;
+	//		typedef  list<PairResults>      Results;
+	for_each(m_riders.begin(), m_riders.end(), extract_rider_results);
+
+	
 	return Results();
 }
 //
@@ -120,7 +159,7 @@ RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  con
 void RaceAnalyzer::init()
 {
 	typedef  istream_iterator<Stage>     StageInIter;
-	
+
 #if DEBUGGING
 	cout << "Running in debug mode."
 		<< " m_stageFilename = " << m_stageFilename
@@ -128,10 +167,10 @@ void RaceAnalyzer::init()
 #else
 	cout << "Not running in debug mode." << endl;
 #endif
-	
+
 	ifstream fInStage(m_stageFilename); // initalize stage file
 
-	if (fInStage.is_open()) 
+	if (fInStage.is_open())
 	{
 		cout << "Stage file open" << endl;
 		StageInIter sIter(fInStage);
@@ -150,7 +189,7 @@ void RaceAnalyzer::init()
 
 	if (fInRiders.is_open())
 	{
-		cout << "Stage file open" << endl;
+		cout << "Riders File open" << endl;
 		for (std::string line; getline(fInRiders, line);)
 		{
 			string name, country, team;
@@ -163,7 +202,11 @@ void RaceAnalyzer::init()
 				test >> time;
 				raceTimes.push_back(time);
 			}
-			m_riders.insert(Rider(name, country, team, raceTimes));
+			m_riders.insert(pair<string, Rider>(name, Rider(name, country, team, raceTimes)));
 		}
+	}
+	else
+	{
+		cout << "Riders File not open." << endl;
 	}
 }
