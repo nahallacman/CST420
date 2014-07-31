@@ -148,7 +148,10 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 
 RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  const
 {
-	return MPH();
+	Stage temp = m_stages.at(stage);
+	double retval = temp.getLength();
+	//now you have the values seconds and retval, calculate miles per hour
+	return MPH(retval);
 }
 
 

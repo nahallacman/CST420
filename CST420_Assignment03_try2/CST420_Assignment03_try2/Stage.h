@@ -10,6 +10,7 @@ public:
 	Stage();
 	Stage(double m_length);
 	friend  istream  &operator>>(istream  &in, Stage &rhs);
+	double getLength(){ return m_length; }
 
 private:
 	double m_length;
