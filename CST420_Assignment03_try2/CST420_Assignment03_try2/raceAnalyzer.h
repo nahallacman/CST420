@@ -150,7 +150,7 @@ class RaceAnalyzer
 
     MPH  calcMPH( Seconds  seconds, unsigned  stage )  const;
       //
-      // Converts the time for a stace/race into miles-per-hour.
+      // Converts the time for a stage/race into miles-per-hour.
       //
 
 

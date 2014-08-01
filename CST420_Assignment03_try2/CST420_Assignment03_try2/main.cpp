@@ -196,6 +196,7 @@ int main()
 	a.riders();
 	a.teams();
 	a.countries();
-	RaceAnalyzer::MPH test = a.calcMPH(Seconds(1), 0);
+	RaceAnalyzer::MPH test = a.calcMPH(Seconds(55800), 0);
+	a.riderResults(0, "ABC", "DEN");
 	return 0;
 }
