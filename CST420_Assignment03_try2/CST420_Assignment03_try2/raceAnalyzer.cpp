@@ -24,6 +24,8 @@ typedef  istream_iterator<string>  StringInIter;
 
 #define DEBUGGING 1
 
+bool is_odd(pair<string, Rider> ret) { return false; }
+
 string extract_rider(pair<string, Rider> ret) { string retval = ret.second.getName(); return retval; }
 string extract_team(pair<string, Rider> ret) { string retval = ret.second.getTeamName(); return retval; }
 string extract_country(pair<string, Rider> ret) { string retval = ret.second.getHomeCountry(); return retval; }
@@ -34,9 +36,10 @@ struct counter {
 	{
 		return tot;
 	}
-	void operator() (int i)
+	int operator() (int i)
 	{
 		tot += i;
+		return tot;
 	}
 } counterobj;
 
@@ -132,15 +135,34 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 	const string  &country)  const
 {
 	Results retval;
+	map<string, Rider> riderTemp1, riderTemp2;
 
-	//  typedef  pair<Seconds, string>  PairResults;
-	//	typedef  list<PairResults>      Results;
 	//start by building a structure where the only riders left are the ones that are in _team_ and _country_
+	copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
+		[team](pair<string, Rider> rider){
+		if (rider.second.getTeamName() == team)
+		{	return true;	}
+		else
+		{	return false;	}
+		}
+	);
+
+	copy_if(riderTemp1.begin(), riderTemp1.end(), inserter(riderTemp2, riderTemp2.begin()), //only copies if the country name matches
+		[country](pair<string, Rider> rider){
+		if (rider.second.getHomeCountry() == country)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	);
+
 
 	//then go through that structure and extract the times for those riders when they were at _stage_	
-	
-
-	std::transform(m_riders.begin(), m_riders.end(), inserter(retval, retval.begin()), 
+	std::transform(riderTemp2.begin(), riderTemp2.end(), inserter(retval, retval.begin()), 
 		[stage](pair<string, Rider> rider){
 		string str;
 		str = rider.second.getName();
@@ -163,10 +185,43 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 	unsigned       stage,
 	unsigned       numRiders)  const
 {
-	return Seconds();
+	Seconds retval;
+	//vector<int> riderTimes;
+	set<int> riderTimes, riderTimes2;
+	map<string, Rider> riderTemp1, riderTemp2;
+
+	//start by building a structure where the only riders left are the ones that are in _teamName_
+	copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
+		[teamName](pair<string, Rider> rider){
+		if (rider.second.getTeamName() == teamName)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	);
+
+	//then create a struture for holding the times from each team mate
+
+	transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
+		[stage](pair<string, Rider> rider){
+		return rider.second.getRaceTimes()[stage];
+		}
+	);
+
+	//then take the top _numRiders_ times and add them together 
+	copy_n( riderTimes.begin(), numRiders, inserter( riderTimes2, riderTimes2.begin() ) );
+
+	counter total = for_each(riderTimes2.begin(), riderTimes2.end(), counterobj );
+	
+	retval = total.get_tot();
+	return retval;
 }
 //
-// Returns stange/race time for the specified team/stage. A
+// Returns stage/race time for the specified team/stage. A
 // team time for a stage is sum of the numRiders fastest
 // times for the team.
 //

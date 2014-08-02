@@ -157,7 +157,7 @@ class RaceAnalyzer
   private  :
 	  // you get to determine the private member data and functions.
 
-	  int m_numstages;
+	  //int m_numstages;
 
 	  string m_stageFilename;
 	  string m_riderFilename;
