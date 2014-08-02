@@ -136,6 +136,16 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 {
 	Results retval;
 	map<string, Rider> riderTemp1, riderTemp2;
+	//---this logic is prototyped, not completed.---
+	//branch in logic -> if stage = 0, then get the time for all the stages instead of just one
+	//if stage is between 1 and numStages() then get the time for just that stage
+	//if team is empty, include riders from all teams
+	//else, include riders from just that team
+	//if country is empty, include riders from all countries
+	//else, include riders from just that team
+	//---end prototyped logic---
+	
+	//the rest of this logic is for the between 1 and numstages(), team isnt empty, and country isnt empty. need to impliment the other three types.
 
 	//start by building a structure where the only riders left are the ones that are in _team_ and _country_
 	copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
@@ -169,7 +179,8 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 		Seconds sec;
 		sec = rider.second.getRaceTimes()[stage];
 		RaceAnalyzer::PairResults ret(sec, str);
-		cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl; return ret;
+		cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl; 
+		return ret;
 		}
 	);
 	
@@ -186,9 +197,14 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 	unsigned       numRiders)  const
 {
 	Seconds retval;
-	//vector<int> riderTimes;
 	set<int> riderTimes, riderTimes2;
 	map<string, Rider> riderTemp1, riderTemp2;
+	
+	//---begin prototyping---
+	//if the stage is 0, include all stage times
+	//if the stage is between 1 and numstages(), include only that stage time
+
+	//---end prototyping--
 
 	//start by building a structure where the only riders left are the ones that are in _teamName_
 	copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
@@ -229,6 +245,11 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 
 RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  const
 {
+	//---begin prototyping---
+	//if the stage is 0, include all stages
+	//if the stage is between 1 and numStages() then include the time for just that stage
+	//---end prototyping---
+
 	Stage temp = m_stages.at(stage);
 	double distance = temp.getLength();
 	//now you have the values seconds and retval, calculate miles per hour
@@ -245,6 +266,11 @@ RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  con
 
 void RaceAnalyzer::init()
 {
+
+
+	//TODO: throw exception for failed file reads
+
+
 	typedef  istream_iterator<Stage>     StageInIter;
 
 #if DEBUGGING
