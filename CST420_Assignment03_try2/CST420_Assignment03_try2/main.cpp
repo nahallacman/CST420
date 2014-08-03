@@ -132,7 +132,7 @@ static MenuChoice  getChoice()
 //
 // Main program
 //
-
+/*
 int  main()
 {
   try
@@ -184,9 +184,9 @@ int  main()
 
   return  EXIT_SUCCESS;
 }
+*/
 
 
-/*
 int main()
 {
 	RaceAnalyzer a( STAGE_FILENAME, RIDER_FILENAME);
@@ -197,9 +197,11 @@ int main()
 	a.riders();
 	a.teams();
 	a.countries();
-	RaceAnalyzer::MPH test = a.calcMPH(Seconds(55800), 0);
+	RaceAnalyzer::MPH test = a.calcMPH(Seconds(525800), 0);
+	RaceAnalyzer::MPH test2 = a.calcMPH(Seconds(55800), 1);
 	a.riderResults(0, "ABC", "DEN");
+	a.riderResults(1, "ABC", "DEN");
 	a.teamTime("ABC", 0, 2);
+	a.teamTime("ABC", 1, 2);
 	return 0;
 }
-*/

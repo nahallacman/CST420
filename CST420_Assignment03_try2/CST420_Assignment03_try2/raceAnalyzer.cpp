@@ -221,12 +221,29 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 	);
 
 	//then create a struture for holding the times from each team mate
-
-	transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
-		[stage](pair<string, Rider> rider){
-		return rider.second.getRaceTimes()[stage];
+	//if the stage is 0, include the times from all stages
+	if (stage == 0)
+	{
+		transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
+			[](pair<string, Rider> rider){
+			vector<int> testing = rider.second.getRaceTimes();
+			counter temp = for_each(testing.begin(), testing.end(), counterobj );
+				//return rider.second.getRaceTimes()[stage];
+			int temp2 = temp.get_tot();
+			return temp2;
 		}
-	);
+		);
+	}
+	else
+	{
+		//if the stage is between 1 and numstages(), include only that stage time
+		//according to the requirements, stage doesn't need to be range checked
+		transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
+			[stage](pair<string, Rider> rider){
+			return rider.second.getRaceTimes()[stage];
+		}
+		);
+	}
 
 	//then take the top _numRiders_ times and add them together 
 	copy_n( riderTimes.begin(), numRiders, inserter( riderTimes2, riderTimes2.begin() ) );
@@ -250,8 +267,25 @@ RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  con
 	//if the stage is between 1 and numStages() then include the time for just that stage
 	//---end prototyping---
 
-	Stage temp = m_stages.at(stage);
-	double distance = temp.getLength();
+	double distance;
+
+	vector<int> testing;
+
+	//if the stage is 0, include all stages
+	if (stage == 0)
+	{
+		transform(m_stages.begin(), m_stages.end(), inserter(testing, testing.begin()),
+			[](Stage var){ return var.getLength(); }
+		);
+		counter count = for_each(testing.begin(), testing.end(), counterobj);
+		distance = count.get_tot();
+	}
+	else //if the stage is between 1 and numStages() then include the time for just that stage
+	{
+		Stage temp = m_stages.at(stage);
+		distance = temp.getLength();
+	}
+
 	//now you have the values seconds and retval, calculate miles per hour
 	double time = seconds;
 	time = time / 3600; // convert to hours
