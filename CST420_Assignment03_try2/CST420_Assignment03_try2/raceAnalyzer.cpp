@@ -147,42 +147,77 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 	
 	//the rest of this logic is for the between 1 and numstages(), team isnt empty, and country isnt empty. need to impliment the other three types.
 
-	//start by building a structure where the only riders left are the ones that are in _team_ and _country_
-	copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
-		[team](pair<string, Rider> rider){
-		if (rider.second.getTeamName() == team)
-		{	return true;	}
-		else
-		{	return false;	}
-		}
-	);
-
-	copy_if(riderTemp1.begin(), riderTemp1.end(), inserter(riderTemp2, riderTemp2.begin()), //only copies if the country name matches
-		[country](pair<string, Rider> rider){
-		if (rider.second.getHomeCountry() == country)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+	if (team.empty()) // copy all riders
+	{
+		copy(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()));
 	}
-	);
-
-
-	//then go through that structure and extract the times for those riders when they were at _stage_	
-	std::transform(riderTemp2.begin(), riderTemp2.end(), inserter(retval, retval.begin()), 
-		[stage](pair<string, Rider> rider){
-		string str;
-		str = rider.second.getName();
-		Seconds sec;
-		sec = rider.second.getRaceTimes()[stage];
-		RaceAnalyzer::PairResults ret(sec, str);
-		cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl; 
-		return ret;
+	else //start by building a structure where the only riders left are the ones that are in _team_
+	{
+		copy_if(m_riders.begin(), m_riders.end(), inserter(riderTemp1, riderTemp1.begin()), // only copies if the team name matches
+			[team](pair<string, Rider> rider){
+			if (rider.second.getTeamName() == team)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-	);
+		);
+	}
+
+	if (country.empty()) // copy all riders
+	{
+		copy(riderTemp1.begin(), riderTemp1.end(), inserter(riderTemp2, riderTemp2.begin()));
+	}
+	else
+	{
+		copy_if(riderTemp1.begin(), riderTemp1.end(), inserter(riderTemp2, riderTemp2.begin()), //only copies if the country name matches
+			[country](pair<string, Rider> rider){
+			if (rider.second.getHomeCountry() == country)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		);
+	}
+
+	if (stage == 0) // get the times for every stage in the race
+	{
+		std::transform(riderTemp2.begin(), riderTemp2.end(), inserter(retval, retval.begin()),
+			[stage](pair<string, Rider> rider){
+			string str;
+			str = rider.second.getName();
+			Seconds sec;
+			vector<int> testing = rider.second.getRaceTimes();
+			counter temp = for_each(testing.begin(), testing.end(), counterobj);
+			sec = temp.get_tot();
+			RaceAnalyzer::PairResults ret(sec, str);
+			//cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl;
+			return ret;
+		}
+		);
+	}
+	else
+	{
+		//then go through that structure and extract the times for those riders when they were at _stage_	
+		std::transform(riderTemp2.begin(), riderTemp2.end(), inserter(retval, retval.begin()),
+			[stage](pair<string, Rider> rider){
+			string str;
+			str = rider.second.getName();
+			Seconds sec;
+			sec = rider.second.getRaceTimes()[stage];
+			RaceAnalyzer::PairResults ret(sec, str);
+			//cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl;
+			return ret;
+		}
+		);
+	}
 	
 	return retval;
 }

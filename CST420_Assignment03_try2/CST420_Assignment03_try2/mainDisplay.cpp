@@ -760,6 +760,7 @@ void  displaySummary( const RaceAnalyzer  &raceData )
   //
   // Dispaly summary info
   //
+  
   cout  <<  endl
         <<  "***********************"  <<  endl
         <<  endl
@@ -771,7 +772,7 @@ void  displaySummary( const RaceAnalyzer  &raceData )
         <<  endl
         <<  "    Fastest rider  :  "  <<  fastestRider                 <<  endl
         <<  "     Fastest time  :";
-
+ 
   displaySeconds( fastestSeconds );
 
   cout  <<  endl
