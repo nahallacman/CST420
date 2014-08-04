@@ -211,7 +211,7 @@ RaceAnalyzer::Results  RaceAnalyzer::riderResults(unsigned       stage,
 			string str;
 			str = rider.second.getName();
 			Seconds sec;
-			sec = rider.second.getRaceTimes()[stage];
+			sec = rider.second.getRaceTimes()[stage - 1];
 			RaceAnalyzer::PairResults ret(sec, str);
 			//cout << "Testing riderResults" << rider.second.getRaceTimes()[stage] << endl;
 			return ret;
@@ -275,7 +275,7 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 		//according to the requirements, stage doesn't need to be range checked
 		transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
 			[stage](pair<string, Rider> rider){
-			return rider.second.getRaceTimes()[stage];
+			return rider.second.getRaceTimes()[stage - 1];
 		}
 		);
 	}
@@ -317,7 +317,7 @@ RaceAnalyzer::MPH  RaceAnalyzer::calcMPH(Seconds  seconds, unsigned  stage)  con
 	}
 	else //if the stage is between 1 and numStages() then include the time for just that stage
 	{
-		Stage temp = m_stages.at(stage);
+		Stage temp = m_stages.at(stage - 1);
 		distance = temp.getLength();
 	}
 
