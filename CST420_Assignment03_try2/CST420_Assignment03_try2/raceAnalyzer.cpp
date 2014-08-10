@@ -424,11 +424,16 @@ void RaceAnalyzer::init()
 			istringstream test(line);
 			test >> name >> country >> team;
 			vector<int> raceTimes;
-			for (int i = 0; i < m_stages.size(); i++)
+			/*for (int i = 0; i < m_stages.size(); i++)
 			{
 				test >> time;
 				raceTimes.push_back(time);
 			}
+			*/
+			for_each(m_stages.begin(), m_stages.end(), [&test, &time, &raceTimes](Stage i){
+				test >> time;
+				raceTimes.push_back(time);
+			});
 			m_riders.insert(pair<string, Rider>(name, Rider(name, country, team, raceTimes)));
 		}
 	}
