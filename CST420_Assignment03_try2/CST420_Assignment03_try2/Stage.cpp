@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: stage.h
+//
+// Declaration for Stage class.
+//
+
 #include "Stage.h"
 
 Stage::Stage() :m_length(0)

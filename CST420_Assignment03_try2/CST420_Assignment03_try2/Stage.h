@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: Stage.h
+//
+//
+//
+
 #ifndef STAGE_H
 #define STAGE_H
 #include <iostream>

@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: book.cpp
+//
+//
+//
+
 #include "book.h"
 #include <iostream>
 #include <sstream>

@@ -255,19 +255,59 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 	}
 	);
 
+	counter total;
 	//then create a struture for holding the times from each team mate
 	//if the stage is 0, include the times from all stages
 	if (stage == 0)
 	{
-		transform(riderTemp1.begin(), riderTemp1.end(), inserter(riderTimes, riderTimes.begin()),
-			[](pair<string, Rider> rider){
-			vector<int> testing = rider.second.getRaceTimes();
-			counter temp = for_each(testing.begin(), testing.end(), counterobj );
-				//return rider.second.getRaceTimes()[stage];
-			int temp2 = temp.get_tot();
-			return temp2;
+		typedef set<int> times;
+		vector<times> raceTimes;
+		
+		int stageIndex = 0;
+
+		transform(m_stages.begin(), m_stages.end(), inserter(raceTimes, raceTimes.begin()),
+			[&riderTemp1, &stageIndex, &raceTimes ](const Stage i){
+				times temp;
+				transform(riderTemp1.begin(), riderTemp1.end(), inserter(temp, temp.begin()), //inserter(raceTimes[stageIndex], raceTimes[stageIndex].begin()), 
+					[&stageIndex](pair<string, Rider> rider){
+					return rider.second.getRaceTimes()[stageIndex];
+				});
+				stageIndex++;
+				return temp;
+			});
+
+		//reduce the size of each set to _numRiders_
+		if (numRiders == 0)
+		{
+			//move on
 		}
-		);
+		else
+		{
+			int numstage = numStages();
+			int count = 0;
+
+			for_each(m_stages.begin(), m_stages.end(), [&count, &raceTimes, &numRiders, &numstage](const Stage i){
+				auto it = raceTimes[count].begin();
+				for (int i = 0; i < numRiders; it++, i++)
+				{
+				};
+				raceTimes[count].erase(it);
+				count++;
+			});
+		}
+
+		//then get a total of the times for what is left in the structure
+		int index = 0;
+		int total2 = 0;
+		counter total1;
+
+		for_each(m_stages.begin(), m_stages.end(), [&index, &raceTimes, &total1, &total2](const Stage i){
+			total1 = for_each(raceTimes[index].begin(), raceTimes[index].end(), counterobj);
+			index++;
+			total2 += total1.get_tot();
+			return total1;
+		});
+		total.tot = total2;
 	}
 	else
 	{
@@ -278,12 +318,17 @@ Seconds  RaceAnalyzer::teamTime(const string  &teamName,
 			return rider.second.getRaceTimes()[stage - 1];
 		}
 		);
+		//then take the top _numRiders_ times for each stage and add them together
+		//this code just takes the top _numRiders_ total times
+		copy_n(riderTimes.begin(), numRiders, inserter(riderTimes2, riderTimes2.begin()));
+
+		total = for_each(riderTimes2.begin(), riderTimes2.end(), counterobj);
 	}
 
-	//then take the top _numRiders_ times and add them together 
-	copy_n( riderTimes.begin(), numRiders, inserter( riderTimes2, riderTimes2.begin() ) );
 
-	counter total = for_each(riderTimes2.begin(), riderTimes2.end(), counterobj );
+	
+
+	
 	
 	retval = total.get_tot();
 	return retval;

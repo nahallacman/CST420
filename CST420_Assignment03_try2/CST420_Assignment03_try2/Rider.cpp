@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: Rider.cpp
+//
+//
+//
+
 #include "Rider.h"
 Rider::Rider()
 {}

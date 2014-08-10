@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: Rider.h
+//
+//
+//
+
 #ifndef RIDER_H
 #define RIDER_H
 #include <iostream>

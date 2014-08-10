@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: book.h
+//
+//
+//
+
 #ifndef BOOK_H
 #define BOOK_H
 #include "word.h"

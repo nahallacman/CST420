@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: word.h
+//
+//
+//
+
 #ifndef WORD_H
 #define WORD_H
 #include <string>

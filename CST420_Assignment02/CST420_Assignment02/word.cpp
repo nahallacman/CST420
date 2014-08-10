@@ -1,3 +1,13 @@
+//
+// CST 407 - assignment #3
+//
+// Cal Barkman
+//
+// File: wood.cpp
+//
+//
+//
+
 #include "word.h"
 
 word::word(string _word, int _pagenum, int _wordnum) :m_word(_word), m_pagenum(_pagenum), m_wordnum(_wordnum)
