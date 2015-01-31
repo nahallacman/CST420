@@ -1,6 +1,6 @@
 /*
 name			class number	assignment number
-Cal Barkman		CST 420			Assignment #1
+Cal Barkman		CST 420			Assignment #4
 */
 
 #ifndef DICTIONARY_H
@@ -20,14 +20,13 @@ using std::endl;
 class dictionary
 {
 public:
-	dictionary();
 	dictionary(string _filename);
 	bool check_dictionary(string _checkme); //false return value means it is not in the dictionary
 
 private:
-	void build();
+	void build(string _filename);
 	string filename;
-	list<string> d;
+	list<string> m_dictionary;
 	//string line;
 	ifstream myfile;
 };

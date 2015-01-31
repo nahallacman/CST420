@@ -1,31 +1,25 @@
 /*
 name			class number	assignment number
-Cal Barkman		CST 420			Assignment #1
+Cal Barkman		CST 420			Assignment #4
 */
 
 #include "dictionary.h"
 
-dictionary::dictionary()
+
+dictionary::dictionary(string _filename)
 {
-	filename = "dictionary.txt";
-	build();
+	build(_filename);
 }
 
-dictionary::dictionary(string _filename):filename(_filename)
-{
-	build();
-}
-
-void dictionary::build()
+void dictionary::build(string _filename)
 {
 	string line;
-	myfile.open(filename);
+	myfile.open(_filename);
 	if (myfile.is_open())
 	{
 		while (getline(myfile, line))
 		{
-			//cout << line << endl;
-			d.push_back(line);
+			m_dictionary.push_back(line);
 		}
 		myfile.close();
 	}
@@ -37,13 +31,11 @@ void dictionary::build()
 
 bool dictionary::check_dictionary(string _checkme)
 {
-
-	bool retval = false;
 	bool found = false;
 	
 	//list<string>::iterator b = d.end();
-	auto b = d.end();
-	for (auto a = d.begin(); a != b && found == false; a++)
+	auto b = m_dictionary.end();
+	for (auto a = m_dictionary.begin(); a != b && found == false; a++)
 	{
 		if (*a == _checkme)
 		{
